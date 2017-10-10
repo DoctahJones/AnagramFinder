@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using Anagrams;
 using System.Collections.Generic;
+using System.IO;
 
 namespace AnagramFinderParallelTests
 {
@@ -114,7 +115,23 @@ namespace AnagramFinderParallelTests
 
             Assert.AreEqual(1, anagrams.Count);
             CollectionAssert.AreEquivalent(an, anagrams.ToArray()[0]);
-
         }
+
+
+        [TestMethod]
+        public void TestAnagramFinderParallelFindsSameAsSingle()
+        {
+            AnagramFinderParallel af = new AnagramFinderParallel();
+            var wordList = File.ReadAllLines(@"..\..\words.txt");
+
+            var anagrams = af.FindAnagrams(wordList);
+
+            AnagramFinder afNorm = new AnagramFinder();
+            var anagrams2 = afNorm.FindAnagrams(wordList);
+
+            Assert.AreEqual(anagrams2.Count, anagrams.Count);
+        }
+
+        
     }
 }
